@@ -1,10 +1,10 @@
-const path = require('path');
+const path = require("path");
 const axios = require("axios");
 const express = require("express");
 const querystring = require("querystring");
 const app = express();
 
-require('dotenv').config();
+require("dotenv").config();
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
@@ -13,7 +13,7 @@ const FRONTEND_URI = process.env.FRONTEND_URI;
 const PORT = process.env.PORT || 8888;
 
 // Priority serve any static files.
-app.use(express.static(path.resolve(__dirname, './client/build')));
+app.use(express.static(path.resolve(__dirname, "./client/build")));
 
 /**
  * Generates a random string containing numbers and letters
@@ -32,7 +32,6 @@ const generateRandomString = (length) => {
 
 const stateKey = "spotify_auth_state";
 
-
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -41,11 +40,9 @@ app.get("/login", (req, res) => {
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
 
-  const scope = [
-    'user-read-private',
-    'user-read-email',
-    'user-top-read',
-  ].join(' ');
+  const scope = ["user-read-private", "user-read-email", "user-top-read"].join(
+    " "
+  );
 
   const queryParams = querystring.stringify({
     response_type: "code",
@@ -100,8 +97,8 @@ app.get("/callback", (req, res) => {
 app.get("/refresh_token", (req, res) => {});
 
 // All remaining requests return the React app, so it can handle routing.
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 
 app.listen(port, () => {
